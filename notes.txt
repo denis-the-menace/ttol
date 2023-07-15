@@ -1,0 +1,1 @@
+1- view olacak mi? react html leri static olarak serverdan renderliyor

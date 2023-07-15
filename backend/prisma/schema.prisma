@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Question {
+  id       Int      @id @default(autoincrement())
+  topic    String   @default("")
+  subtopic String   @default("")
+  votes    Int      @default(0)
+  answers  Answer[]
+}
+
+model Answer {
+  id          Int      @id @default(autoincrement())
+  question    Question @relation(fields: [question_id], references: [id])
+  question_id  Int
+  answer_text String   @default("")
+  is_truth    Boolean
+}

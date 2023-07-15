@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Mesopotamia",
+    "topic": "Mesopotamian History",
+    "truth1": "1) Mesopotamia was home to some of the world's first written laws, including the Code of Hammurabi.",
+    "truth2": "2) The Tigris and Euphrates Rivers provided fertile land for agriculture and allowed for the development of early civilizations in Mesopotamia.",
+    "lie": "3) Mesopotamia was known for its advanced use of electricity, with wind turbines and hydroelectric dams powering cities and industries."
+  },
+  {
+    "title": "Sumer",
+    "topic": "Mesopotamian History",
+    "truth1": "Sumerians invented the first form of writing using cuneiform symbols.",
+    "truth2": "The Sumerian civilization existed in ancient Mesopotamia and developed advanced agricultural techniques.",
+    "lie": ""
+  },
+  {
+    "title": "Babylon",
+    "topic": "Mesopotamian History",
+    "truth1": "The Great Wall of China is the only man-made structure visible from space.",
+    "truth2": "The tallest mountain in the solar system, Olympus Mons, is located on Mars.",
+    "lie": "Babylon was the capital of ancient Mesopotamia and is still standing today as a thriving city."
+  }
+]
