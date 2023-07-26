@@ -1,25 +1,44 @@
-// const { PrismaClient } = require("@prisma/client");
-const prisma = require("../prisma/client.ts");
+const { PrismaClient } = require("@prisma/client");
+// const prisma = require("../dist/client.js");
 const { readFileSync } = require("fs");
 const { resolve } = require("path");
 
 const datasetPath = resolve(__dirname, "../../data/dataset.json");
-const questions = JSON.parse(readFileSync(datasetPath).toString());
+const entries = JSON.parse(readFileSync(datasetPath).toString());
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 async function main() {
-  for (const question of questions) {
-    const entry = await prisma.question.create({
+  for (const entry of entries) {
+    const question = await prisma.question.create({
       data: {
         topic: "History",
-        subtopic: question.topic,
-        truth1: question.truth1,
-        truth2: question.truth2,
-        lie: question.lie,
+        subtopic: entry.topic,
       },
     });
-    console.log(entry);
+
+    const truth1 = await prisma.answer.create({
+      data: {
+        question: { connect: { id: question.id } },
+        answer_text: entry.truth1,
+        is_truth: true,
+      },
+    });
+    const truth2 = await prisma.answer.create({
+      data: {
+        question: { connect: { id: question.id } },
+        answer_text: entry.truth2,
+        is_truth: true,
+      },
+    });
+    const lie = await prisma.answer.create({
+      data: {
+        question: { connect: { id: question.id } },
+        answer_text: entry.lie,
+        is_truth: false,
+      },
+    });
+    console.log(question.topic + question.id + truth1 + truth2 + lie);
   }
 }
 

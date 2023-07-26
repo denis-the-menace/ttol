@@ -2,52 +2,40 @@
 
 import { useState, useEffect } from "react";
 
-type QuestionType = {
-  id: number;
-  topic: string;
-  subtopic: string;
-  truth1: string;
-  truth2: string;
-  lie: string;
-  votes: number;
+type Fact = {
+  questionId: number;
+  text: string;
+  isTruth: boolean;
 };
 
-function shuffleArray(array: string[]) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
 export default function Question({
-  id,
+  facts,
   topic,
   subtopic,
-  truth1,
-  truth2,
-  lie,
-  votes,
-}: QuestionType) {
-  const [answers, setAnswers] = useState([truth1, truth2, lie]);
-
-  useEffect(() => {
-    const shuffledAnswers = shuffleArray([truth1, truth2, lie]);
-    setAnswers(shuffledAnswers);
-    console.log("render");
-  }, []);
+}: {
+  facts: Fact[];
+  topic: string;
+  subtopic: string;
+}) {
+  const [clicked, setClicked] = useState(null);
 
   return (
     <div>
-      <h1>{topic}</h1>
-      <h2>{subtopic}</h2>
+      <h1 className="text-2xl">{topic}</h1>
+      <h2 className="text-xl">{subtopic}</h2>
       <ul>
-        {answers.map((item, index) => (
-          <li key={index}>
-            <input type="radio" name="answer" value={index + 1} />
-            {item}
-          </li>
-        ))}
+        <li>
+          <input type="radio" name="answer" value="1" />
+          {facts[0].text}
+        </li>
+        <li>
+          <input type="radio" name="answer" value="2" />
+          {facts[1].text}
+        </li>
+        <li>
+          <input type="radio" name="answer" value="3" />
+          {facts[2].text}
+        </li>
       </ul>
     </div>
   );

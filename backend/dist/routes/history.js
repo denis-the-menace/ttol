@@ -26,16 +26,41 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 }));
-//clienttan header ile sayiyi pass le
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+//daha duzgunlestir if else i kaldirmaya en azindan else i kaldirmaya calis
 router.get("/random", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const subtopic = (_a = req.query.subtopic) === null || _a === void 0 ? void 0 : _a.toString();
+    console.log(subtopic);
     try {
-        const randomNumber = Math.floor(Math.random() * 2);
-        const randomQuestion = yield client_1.default.question.findUnique({
+        const randomNumber = Math.floor(Math.random() * 6);
+        const randomQuestion = yield client_1.default.question.findFirst({
             where: {
-                id: randomNumber,
+                subtopic: subtopic,
             },
+            skip: randomNumber,
         });
-        res.json(randomQuestion);
+        if (randomQuestion === null) {
+            res.status(404).json({
+                message: "Database error, question not found.",
+            });
+        }
+        else {
+            const answers = yield client_1.default.answer.findMany({
+                where: {
+                    question_id: randomQuestion.id,
+                },
+            });
+            const shuffledAnswers = shuffleArray(answers);
+            console.dir(randomQuestion);
+            res.json(shuffledAnswers);
+        }
     }
     catch (error) {
         res.status(500).json({
