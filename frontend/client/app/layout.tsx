@@ -15,10 +15,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="h-screen bg-gradient-to-b from-color1 to-color2 flex items-center justify-center">
+      <body className="h-screen bg-white flex items-center justify-center">
         {children}
       </body>
     </html>
   );
 }
 // <main className="h-screen bg-gradient-to-b from-cyan-500 to-blue-500 flex items-center justify-center">
+// <body className="h-screen bg-gradient-to-b from-color1 to-color2 flex items-center justify-center">

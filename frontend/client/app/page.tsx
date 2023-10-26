@@ -1,17 +1,18 @@
-import Link from "next/link";
+"use client";
+import { useState } from "react";
+import TopicSelection from "./topic-selection";
+import SubtopicSelection from "./subtopic-selection";
 
 export default function Home() {
+  const [topic, setTopic] = useState<string | null>(null);
+
   return (
     <main className="flex flex-col justify-center items-center p-24">
-      <h1 className="font-bold mb-3 text-2xl">Please choose a topic.</h1>
-      <ul className="flex flex-col justify-center items-center">
-        <li className="mb-3 text-2xl">
-          <Link href="/history">History</Link>
-        </li>
-        <li className="mb-3 text-2xl">
-          <Link href="/anime">Anime</Link>
-        </li>
-      </ul>
+      {topic === null ? (
+        <TopicSelection onChoose={(selectedTopic) => setTopic(selectedTopic)} />
+      ) : (
+        <SubtopicSelection topic={topic} />
+      )}
     </main>
   );
 }

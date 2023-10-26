@@ -45,13 +45,37 @@ router.get("/random", async (req, res) => {
       });
       const shuffledAnswers = shuffleArray(answers);
       console.dir(randomQuestion);
-      res.json(shuffledAnswers);
+      res.json({ question: randomQuestion, answers: shuffledAnswers });
     }
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong",
     });
   }
+});
+
+router.post("/:questionId", async (req, res) => {
+  console.log(req.body);
+  switch (req.body) {
+    case "downvote":
+      await prisma.question.update({
+        where: { id: Number(req.params.questionId) },
+        data: { votes: { decrement: 1 } },
+      });
+      break;
+    case "upvote":
+      await prisma.question.update({
+        where: { id: Number(req.params.questionId) },
+        data: { votes: { increment: 1 } },
+      });
+      break;
+    default:
+      break;
+  }
+  const question = await prisma.question.findFirst({
+    where: { id: Number(req.params.questionId) },
+  });
+  res.send(question);
 });
 
 export default router;

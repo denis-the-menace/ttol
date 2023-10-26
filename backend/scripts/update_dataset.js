@@ -12,7 +12,7 @@ async function main() {
   for (const entry of entries) {
     const question = await prisma.question.create({
       data: {
-        topic: "History",
+        topic: "history",
         subtopic: entry.topic,
       },
     });
@@ -21,23 +21,26 @@ async function main() {
       data: {
         question: { connect: { id: question.id } },
         answer_text: entry.truth1,
-        is_truth: true,
       },
     });
     const truth2 = await prisma.answer.create({
       data: {
         question: { connect: { id: question.id } },
         answer_text: entry.truth2,
-        is_truth: true,
       },
     });
     const lie = await prisma.answer.create({
       data: {
         question: { connect: { id: question.id } },
         answer_text: entry.lie,
-        is_truth: false,
       },
     });
+
+    await prisma.question.update({
+      where: { id: question.id },
+      data: { lie_id: lie.id },
+    });
+
     console.log(question.topic + question.id + truth1 + truth2 + lie);
   }
 }

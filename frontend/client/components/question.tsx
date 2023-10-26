@@ -1,41 +1,49 @@
-"use client";
+import Fact from "./fact";
 
-import { useState, useEffect } from "react";
+export type QuestionType = {
+  id: number;
+  topic: string;
+  subtopic: string;
+  votes: number;
+  lie_id: number;
+};
 
-type Fact = {
-  questionId: number;
-  text: string;
-  isTruth: boolean;
+export type FactType = {
+  id: number;
+  question_id: number;
+  answer_text: string;
 };
 
 export default function Question({
+  question,
   facts,
-  topic,
-  subtopic,
+  onShow,
 }: {
-  facts: Fact[];
-  topic: string;
-  subtopic: string;
+  question: QuestionType;
+  facts: FactType[];
+  onShow: (state: boolean) => void;
 }) {
-  const [clicked, setClicked] = useState(null);
+  const checkAnswer = (fact: FactType) => {
+    if (question.lie_id === fact.id) {
+      onShow(true);
+      return;
+    }
+    onShow(false);
+    return;
+  };
 
   return (
     <div>
-      <h1 className="text-2xl">{topic}</h1>
-      <h2 className="text-xl">{subtopic}</h2>
+      <h1 className="text-4xl">{question.topic}</h1>
+      <h2 className="text-2xl mb-2">{"Roman"}</h2>
       <ul>
-        <li>
-          <input type="radio" name="answer" value="1" />
-          {facts[0].text}
-        </li>
-        <li>
-          <input type="radio" name="answer" value="2" />
-          {facts[1].text}
-        </li>
-        <li>
-          <input type="radio" name="answer" value="3" />
-          {facts[2].text}
-        </li>
+        {facts.map((fact: FactType) => (
+          <Fact
+            key={fact.id}
+            text={fact.answer_text}
+            onChoose={() => checkAnswer(fact)}
+          />
+        ))}
       </ul>
     </div>
   );
