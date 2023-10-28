@@ -21,13 +21,23 @@ module.exports = {
       },
       keyframes: {
         fadeIn: {
-          "0%": { opacity: 0, transform: "translateY(-10%)"},
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        fadeInTopToBottom: {
+          "0%": { opacity: 0, transform: "translateY(-10%)" },
           "100%": { opacity: 1, transform: "translateY(0%)" },
+        },
+        moveBottomToTop: {
+          "0%": { transform: "translateY(0%)" },
+          "100%": { transform: "translateY(5%)" },
         },
       },
       animation: {
-        "fade-in": "fadeIn 0.5s ease-out",
-      }
+        "fade-in": "fadeIn 5s ease-out",
+        "fade-in-top-to-bottom": "fadeInTopToBottom 0.5s ease-out",
+        "move-bottom-to-top": "moveBottomToTop 0.5s ease-out",
+      },
     },
   },
   plugins: [],

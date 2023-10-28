@@ -22,11 +22,14 @@ export default function Game({
   const [data, setData] = useState<QuestionData | null>(null);
   const [onNext, setOnNext] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
+  const [isRendered, setIsRendered] = useState(false);
 
   const nextQuestion = () => {
     getData({ topic, subtopics }).then((data) => {
       setData(data);
       setIsVoted(false);
+      setIsRendered(false);
+      console.log("in nextQuestion");
     });
 
     // Uncheck fact.
@@ -57,9 +60,20 @@ export default function Game({
     });
   }, [topic, subtopics]);
 
+  useEffect(() => {
+    // setTimeout(() => {
+    //   setIsRendered(true);
+    // }, 1000);
+    setIsRendered(true);
+  }, [isRendered]);
+
   return (
     <div>
-      <div className="flex-row items-center justify-center p-2 border-solid border-2 rounded-md border-black">
+      <div
+        className={`flex-row items-center justify-center p-2 border-solid border-2 rounded-md border-black ${
+          isRendered ? "animate-fade-in" : "invisible"
+        }`}
+      >
         {data ? (
           <Question
             question={{
@@ -97,46 +111,46 @@ export default function Game({
         )}
       </div>
       <div className="text-lg">
-        {onNext ? (
-          <div className="flex flex-col p-2 animate-fade-in">
-            <div className="flex flex-row">
-              <div>How would you rate this question?</div>
-              <div className="ml-auto">
-                <button
-                  className="mr-1"
-                  disabled={isVoted}
-                  onClick={() => handleClick("downvote")}
-                >
-                  bad
-                </button>
-                <button
-                  className="mr-1"
-                  disabled={isVoted}
-                  onClick={() => handleClick("indifferent")}
-                >
-                  ok
-                </button>
-                <button
-                  className="mr-1"
-                  disabled={isVoted}
-                  onClick={() => handleClick("upvote")}
-                >
-                  good
-                </button>
-              </div>
+        <div
+          className={`flex flex-col p-2 ${
+            onNext ? "animate-fade-in-top-to-bottom" : "invisible"
+          }`}
+        >
+          <div className="flex flex-row">
+            <div>How would you rate this question?</div>
+            <div className="ml-auto">
+              <button
+                className="mr-1"
+                disabled={isVoted}
+                onClick={() => handleClick("downvote")}
+              >
+                bad
+              </button>
+              <button
+                className="mr-1"
+                disabled={isVoted}
+                onClick={() => handleClick("indifferent")}
+              >
+                ok
+              </button>
+              <button
+                className="mr-1"
+                disabled={isVoted}
+                onClick={() => handleClick("upvote")}
+              >
+                good
+              </button>
             </div>
-            <button
-              className="ml-auto"
-              onClick={() => {
-                nextQuestion();
-              }}
-            >
-              Next Question
-            </button>
           </div>
-        ) : (
-          <></>
-        )}
+          <button
+            className="ml-auto"
+            onClick={() => {
+              nextQuestion();
+            }}
+          >
+            Next Question
+          </button>
+        </div>
       </div>
     </div>
   );
