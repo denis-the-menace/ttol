@@ -4,6 +4,7 @@ import getData from "./get-data";
 import Question from "./question";
 import { QuestionType, FactType } from "./question";
 import postVote from "./post-vote";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface QuestionData {
   question: QuestionType;
@@ -22,15 +23,17 @@ export default function Game({
   const [data, setData] = useState<QuestionData | null>(null);
   const [onNext, setOnNext] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
-  const [isRendered, setIsRendered] = useState(false);
+  const [isRendered, setIsRendered] = useState(true);
 
   const nextQuestion = () => {
+    setIsRendered(false);
     getData({ topic, subtopics }).then((data) => {
       setData(data);
       setIsVoted(false);
-      setIsRendered(false);
-      console.log("in nextQuestion");
     });
+    setTimeout(() => {
+      setIsRendered(true);
+    }, 1000);
 
     // Uncheck fact.
     const radioButtons = document.querySelectorAll("input[type='radio']");
@@ -53,6 +56,7 @@ export default function Game({
     }
   };
 
+  //bu kod niye var???
   //////////////////////////// lower case kodunu cikar
   useEffect(() => {
     getData({ topic, subtopics }).then((data) => {
@@ -60,55 +64,52 @@ export default function Game({
     });
   }, [topic, subtopics]);
 
-  useEffect(() => {
-    // setTimeout(() => {
-    //   setIsRendered(true);
-    // }, 1000);
-    setIsRendered(true);
-  }, [isRendered]);
-
   return (
     <div>
-      <div
-        className={`flex-row items-center justify-center p-2 border-solid border-2 rounded-md border-black ${
-          isRendered ? "animate-fade-in" : "invisible"
-        }`}
-      >
-        {data ? (
-          <Question
-            question={{
-              id: data.question.id,
-              topic: data.question.topic,
-              subtopic: data.question.subtopic,
-              votes: data.question.votes,
-              lie_id: data.question.lie_id,
-            }}
-            facts={[
-              {
-                id: data.answers[0].id,
-                question_id: data.answers[0].question_id,
-                answer_text: data.answers[0].answer_text,
-              },
-              {
-                id: data.answers[1].id,
-                question_id: data.answers[1].question_id,
-                answer_text: data.answers[1].answer_text,
-              },
-              {
-                id: data.answers[2].id,
-                question_id: data.answers[2].question_id,
-                answer_text: data.answers[2].answer_text,
-              },
-            ]}
-            onShow={(isAnswerCorrect) => {
-              // if (isAnswerCorrect) alert("is correct");
-              // else alert("is incorrect");
-              setOnNext(true);
-            }}
-          />
-        ) : (
-          <p>Loading...</p>
-        )}
+      <div className="flex-row items-center justify-center p-2 border-solid border-2 rounded-md border-black">
+        <AnimatePresence>
+          {isRendered && data ? (
+            <motion.div
+              key={data.question.id}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <Question
+                question={{
+                  id: data.question.id,
+                  topic: data.question.topic,
+                  subtopic: data.question.subtopic,
+                  votes: data.question.votes,
+                  lie_id: data.question.lie_id,
+                }}
+                facts={[
+                  {
+                    id: data.answers[0].id,
+                    question_id: data.answers[0].question_id,
+                    answer_text: data.answers[0].answer_text,
+                  },
+                  {
+                    id: data.answers[1].id,
+                    question_id: data.answers[1].question_id,
+                    answer_text: data.answers[1].answer_text,
+                  },
+                  {
+                    id: data.answers[2].id,
+                    question_id: data.answers[2].question_id,
+                    answer_text: data.answers[2].answer_text,
+                  },
+                ]}
+                onShow={(isAnswerCorrect) => {
+                  // if (isAnswerCorrect) alert("is correct");
+                  // else alert("is incorrect");
+                  setOnNext(true);
+                }}
+              />
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
       <div className="text-lg">
         <div
