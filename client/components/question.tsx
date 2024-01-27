@@ -1,4 +1,5 @@
 import Fact from "./fact";
+import { useState } from "react";
 
 export type QuestionType = {
   id: number;
@@ -23,25 +24,30 @@ export default function Question({
   facts: FactType[];
   onShow: (state: boolean) => void;
 }) {
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const checkAnswer = (fact: FactType) => {
     if (question.lie_id === fact.id) {
       onShow(true);
       return;
     }
     onShow(false);
+    setIsDisabled(true);
     return;
   };
 
   return (
     <div>
       <h1 className="text-4xl">{question.topic}</h1>
-      <h2 className="text-2xl mb-2">{"Roman"}</h2>
+      <h2 className="text-2xl mb-2">{question.subtopic}</h2>
       <ul>
-        {facts.map((fact: FactType) => (
+        {facts.map((fact, index) => (
           <Fact
             key={fact.id}
+            index={index}
             text={fact.answer_text}
             onChoose={() => checkAnswer(fact)}
+            isDisabled={isDisabled}
           />
         ))}
       </ul>

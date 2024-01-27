@@ -16,9 +16,14 @@ export default function TopicSelection({
             History
           </button>
         </li>
+        {/*More topics to be added
+
         <li className="mb-3 text-2xl">
-          <button>Anime</button>
+          <button>Cinema</button>
         </li>
+        <li className="mb-3 text-2xl">
+          <button>Geography</button>
+        </li>*/}
       </ul>
     </div>
   );

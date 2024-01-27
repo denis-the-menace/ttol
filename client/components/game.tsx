@@ -18,8 +18,6 @@ export default function Game({
   topic: string;
   subtopics: string;
 }) {
-  //ONEMLI
-  //null icin bi error handle lazim mi yoksa getData daki catch yetiyor mu
   const [data, setData] = useState<QuestionData | null>(null);
   const [onNext, setOnNext] = useState(false);
   const [isVoted, setIsVoted] = useState(false);
@@ -36,10 +34,10 @@ export default function Game({
     }, 1000);
 
     // Uncheck fact.
-    const radioButtons = document.querySelectorAll("input[type='radio']");
-    radioButtons.forEach(
-      (radioButton) => ((radioButton as HTMLInputElement).checked = false),
-    );
+    // const radioButtons = document.querySelectorAll("input[type='radio']");
+    // radioButtons.forEach(
+    //   (radioButton) => ((radioButton as HTMLInputElement).checked = false),
+    // );
 
     setOnNext(false);
   };

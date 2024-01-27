@@ -21,7 +21,6 @@ function shuffleArray(array: any[]) {
   return array;
 }
 
-//daha duzgunlestir if else i kaldirmaya en azindan else i kaldirmaya calis
 router.get("/random", async (req, res) => {
   const subtopic = req.query.subtopic?.toString();
   console.log(subtopic);

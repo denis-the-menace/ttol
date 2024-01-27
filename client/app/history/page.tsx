@@ -3,12 +3,11 @@ import Game from "@/components/game";
 import { useSearchParams } from "next/navigation";
 
 export default function History() {
-  // const subtopic = useSearchParams().get("subtopic") || "";
-  // let [isPending, startTransition] = useTransition();
+  const subtopics = useSearchParams().get("subtopics") || "";
 
   return (
     <main>
-      <Game topic="history" subtopics="roman" />
+      <Game topic="history" subtopics={subtopics} />
     </main>
   );
 }
